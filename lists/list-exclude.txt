@@ -1,3 +1,5 @@
+# https://github.com/Flowseal/zapret-discord-youtube/
+# zapret-discord-youtube
 pusher.com
 live-video.net
 ttvnw.net
@@ -23,3 +25,17 @@ msi.com
 akamaitechnologies.com
 2ip.ru
 yandex.ru
+
+# custom
+xn--p1ai
+ru
+cn
+vk.com
+tuya.com
+tuyaeu.com
+tuyacn.com
+tuyaus.com
+tuyaaf.com
+tuya-inc.cn
+tuyain.com
+iot334.com
