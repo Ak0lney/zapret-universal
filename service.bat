@@ -1,5 +1,6 @@
 @echo off
-set "LOCAL_VERSION=1.9.2"
+set "LOCAL_VERSION=1.9.2.1"
+chcp 65001 > nul
 
 :: External commands
 if "%~1"=="status_zapret" (
@@ -31,12 +32,12 @@ if "%1"=="admin" (
     call :check_command findstr
     call :check_command netsh
 
-    echo Started with admin rights
+    echo Запущен с правами администратора...
 ) else (
     call :check_extracted
     call :check_command powershell
 
-    echo Requesting admin rights...
+    echo Запрос прав администратора...
     powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs"
     exit
 )
@@ -51,33 +52,32 @@ call :game_switch_status
 call :check_updates_switch_status
 
 set "menu_choice=null"
+chcp 65001 > nul
 echo =========  v!LOCAL_VERSION!  =========
-echo 1. Install Service
-echo 2. Remove Services
-echo 3. Check Status
-echo 4. Run Diagnostics
-echo 5. Check Updates
-echo 6. Switch Check Updates (%CheckUpdatesStatus%)
-echo 7. Switch Game Filter (%GameFilterStatus%)
-echo 8. Switch ipset (%IPsetStatus%)
-echo 9. Update ipset list
-echo 10. Update hosts file (for discord voice)
-echo 11. Run Tests
-echo 0. Exit
-set /p menu_choice=Enter choice (0-11): 
+echo.
+echo 1. Установить сервис
+echo 2. Удалить сервис
+echo    Описание: Сервис - автозапуск запрета при включении пк
+echo.
+echo 3. Проверить состояние запрета
+echo.
+echo 4. Установить / обновить списки
+echo    Описание: Списки - текстовые файлы с домеными и IP-адресами, на которые работает запрет
+echo.
+echo 5. Установить / обновить hosts файл
+echo    Описание: Hosts файл - это системный текстовый файл, который сопоставляет доменные имена 
+echo    (для работы различных сервисов без VPN)
+echo.
+echo 6. Закрыть программу
+echo.
+set /p menu_choice=Выберите 1 до 6: 
 
 if "%menu_choice%"=="1" goto service_install
 if "%menu_choice%"=="2" goto service_remove
 if "%menu_choice%"=="3" goto service_status
-if "%menu_choice%"=="4" goto service_diagnostics
-if "%menu_choice%"=="5" goto service_check_updates
-if "%menu_choice%"=="6" goto check_updates_switch
-if "%menu_choice%"=="7" goto game_switch
-if "%menu_choice%"=="8" goto ipset_switch
-if "%menu_choice%"=="9" goto ipset_update
-if "%menu_choice%"=="10" goto hosts_update
-if "%menu_choice%"=="11" goto run_tests
-if "%menu_choice%"=="0" exit /b
+if "%menu_choice%"=="4" goto ipset_update
+if "%menu_choice%"=="5" goto hosts_update
+if "%menu_choice%"=="6" exit /b
 goto menu
 
 
@@ -90,7 +90,7 @@ exit /b
 :: STATUS ==============================
 :service_status
 cls
-chcp 437 > nul
+chcp 65001 > nul
 
 sc query "zapret" >nul 2>&1
 if !errorlevel!==0 (
@@ -108,9 +108,9 @@ echo:
 
 tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
 if !errorlevel!==0 (
-    call :PrintGreen "Bypass (winws.exe) is RUNNING."
+    call :PrintGreen "Служба (winws.exe) запущена"
 ) else (
-    call :PrintRed "Bypass (winws.exe) is NOT running."
+    call :PrintRed "Служба (winws.exe) остановлена"
 )
 
 pause
@@ -125,16 +125,16 @@ set "ServiceStatus=%ServiceStatus: =%"
 
 if "%ServiceStatus%"=="RUNNING" (
     if "%~2"=="soft" (
-        echo "%ServiceName%" is ALREADY RUNNING as service, use "service.bat" and choose "Remove Services" first if you want to run standalone bat.
+        echo "%ServiceName%" уже запущена. Удалите службу в "service.bat" для запуска этого файла
         pause
         exit /b
     ) else (
-        echo "%ServiceName%" service is RUNNING.
+        echo "%ServiceName%" сервис запущен.
     )
 ) else if "%ServiceStatus%"=="STOP_PENDING" (
     call :PrintYellow "!ServiceName! is STOP_PENDING, that may be caused by a conflict with another bypass. Run Diagnostics to try to fix conflicts"
 ) else if not "%~2"=="soft" (
-    echo "%ServiceName%" service is NOT running.
+    echo "%ServiceName%" сервис не запущен.
 )
 
 exit /b
@@ -151,7 +151,7 @@ if !errorlevel!==0 (
     net stop %SRVCNAME%
     sc delete %SRVCNAME%
 ) else (
-    echo Service "%SRVCNAME%" is not installed.
+    echo Сервис "%SRVCNAME%" не установлен.
 )
 
 tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
@@ -186,7 +186,7 @@ set "BIN_PATH=%~dp0bin\"
 set "LISTS_PATH=%~dp0lists\"
 
 :: Searching for .bat files in current folder, except files that start with "service"
-echo Pick one of the options:
+echo Выберите один из профилей:
 set "count=0"
 for %%f in (*.bat) do (
     set "filename=%%~nxf"
@@ -199,16 +199,16 @@ for %%f in (*.bat) do (
 
 :: Choosing file
 set "choice="
-set /p "choice=Input file index (number): "
+set /p "choice=Введите номер профиля: "
 if "!choice!"=="" (
-    echo The choice is empty, exiting...
+    echo Вы ничего не выбрали, возращаюсь в меню...
     pause
     goto menu
 )
 
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
-    echo Invalid choice, exiting...
+    echo Неправильный выбор, возращаюсь в меню...
     pause
     goto menu
 )
@@ -304,7 +304,7 @@ set SRVCNAME=zapret
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
 sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" !ARGS!" DisplayName= "zapret" start= auto
-sc description %SRVCNAME% "Zapret DPI bypass software"
+sc description %SRVCNAME% "Обход блокировок РКН"
 sc start %SRVCNAME%
 for %%F in ("!file%choice%!") do (
     set "filename=%%~nF"
@@ -317,13 +317,13 @@ goto menu
 
 :: CHECK UPDATES =======================
 :service_check_updates
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
 :: Set current version and URLs
-set "GITHUB_VERSION_URL=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/main/.service/version.txt"
-set "GITHUB_RELEASE_URL=https://github.com/Flowseal/zapret-discord-youtube/releases/tag/"
-set "GITHUB_DOWNLOAD_URL=https://github.com/Flowseal/zapret-discord-youtube/releases/latest/download/zapret-discord-youtube-"
+set "GITHUB_VERSION_URL=https://raw.githubusercontent.com/Ak0lney/zapret-universal/main/.service/version.txt"
+set "GITHUB_RELEASE_URL=https://github.com/Ak0lney/zapret-universal/releases/tag/"
+set "GITHUB_DOWNLOAD_URL=https://github.com/Ak0lney/zapret-universal/releases/latest/download/zapret-universal-"
 
 :: Get the latest version from GitHub
 for /f "delims=" %%A in ('powershell -command "(Invoke-WebRequest -Uri \"%GITHUB_VERSION_URL%\" -Headers @{\"Cache-Control\"=\"no-cache\"} -UseBasicParsing -TimeoutSec 5).Content.Trim()" 2^>nul') do set "GITHUB_VERSION=%%A"
@@ -349,13 +349,13 @@ echo New version available: %GITHUB_VERSION%
 echo Release page: %GITHUB_RELEASE_URL%%GITHUB_VERSION%
 
 set "CHOICE="
-set /p "CHOICE=Do you want to automatically download the new version? (Y/N) (default: Y) "
-if "%CHOICE%"=="" set "CHOICE=Y"
-if /i "%CHOICE%"=="y" set "CHOICE=Y"
+set /p "CHOICE=Хотите автоматически скачать новую версию? (Д/Н) (По умолчанию: Д) "
+if "%CHOICE%"=="д" set "CHOICE=Д"
+if /i "%CHOICE%"=="н" set "CHOICE=Н"
 
-if /i "%CHOICE%"=="Y" (
+if /i "%CHOICE%"=="Д" (
     echo Opening the download page...
-    start "" "%GITHUB_DOWNLOAD_URL%%GITHUB_VERSION%.rar"
+    start "" "%GITHUB_DOWNLOAD_URL%%GITHUB_VERSION%.zip"
 )
 
 
@@ -367,7 +367,7 @@ goto menu
 
 :: DIAGNOSTICS =========================
 :service_diagnostics
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
 :: Base Filtering Engine
@@ -667,7 +667,7 @@ goto menu
 
 :: GAME SWITCH ========================
 :game_switch_status
-chcp 437 > nul
+chcp 65001 > nul
 
 set "gameFlagFile=%~dp0utils\game_filter.enabled"
 
@@ -682,7 +682,7 @@ exit /b
 
 
 :game_switch
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
 if not exist "%gameFlagFile%" (
@@ -701,7 +701,7 @@ goto menu
 
 :: CHECK UPDATES SWITCH =================
 :check_updates_switch_status
-chcp 437 > nul
+chcp 65001 > nul
 
 set "checkUpdatesFlag=%~dp0utils\check_updates.enabled"
 
@@ -714,7 +714,7 @@ exit /b
 
 
 :check_updates_switch
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
 if not exist "%checkUpdatesFlag%" (
@@ -731,7 +731,7 @@ goto menu
 
 :: IPSET SWITCH =======================
 :ipset_switch_status
-chcp 437 > nul
+chcp 65001 > nul
 
 set "listFile=%~dp0lists\ipset-all.txt"
 for /f %%i in ('type "%listFile%" 2^>nul ^| find /c /v ""') do set "lineCount=%%i"
@@ -750,7 +750,7 @@ exit /b
 
 
 :ipset_switch
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
 set "listFile=%~dp0lists\ipset-all.txt"
@@ -797,13 +797,13 @@ goto menu
 
 :: IPSET UPDATE =======================
 :ipset_update
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
 set "listFile=%~dp0lists\ipset-all.txt"
-set "url=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/refs/heads/main/.service/ipset-service.txt"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/lists/ipset-all.txt"
 
-echo Updating ipset-all...
+echo Обновляю "ipset-all.txt"...
 
 if exist "%SystemRoot%\System32\curl.exe" (
     curl -L -o "%listFile%" "%url%"
@@ -817,7 +817,84 @@ if exist "%SystemRoot%\System32\curl.exe" (
         "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
 )
 
-echo Finished
+echo "ipset-all.txt" обновлен
+
+set "listFile=%~dp0lists\ipset-exclude.txt"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/lists/ipset-exclude.txt"
+
+echo Обновляю "ipset-exclude.txt"...
+
+if exist "%SystemRoot%\System32\curl.exe" (
+    curl -L -o "%listFile%" "%url%"
+) else (
+    powershell -Command ^
+        "$url = '%url%';" ^
+        "$out = '%listFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
+        "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
+        "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
+)
+
+echo "ipset-exclude.txt" обновлен
+
+set "listFile=%~dp0lists\list-exclude.txt"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/lists/list-exclude.txt"
+
+echo Обновляю "list-exclude.txt"...
+
+if exist "%SystemRoot%\System32\curl.exe" (
+    curl -L -o "%listFile%" "%url%"
+) else (
+    powershell -Command ^
+        "$url = '%url%';" ^
+        "$out = '%listFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
+        "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
+        "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
+)
+
+echo "list-exclude.txt" обновлен
+
+set "listFile=%~dp0lists\list-general.txt"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/lists/list-general.txt"
+
+echo Обновляю "list-general.txt"...
+
+if exist "%SystemRoot%\System32\curl.exe" (
+    curl -L -o "%listFile%" "%url%"
+) else (
+    powershell -Command ^
+        "$url = '%url%';" ^
+        "$out = '%listFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
+        "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
+        "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
+)
+
+echo "list-general.txt" обновлен
+
+set "listFile=%~dp0lists\list-google.txt"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/lists/list-google.txt"
+
+echo Обновляю "list-google.txt"...
+
+if exist "%SystemRoot%\System32\curl.exe" (
+    curl -L -o "%listFile%" "%url%"
+) else (
+    powershell -Command ^
+        "$url = '%url%';" ^
+        "$out = '%listFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
+        "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
+        "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
+)
+
+echo "list-google.txt" обновлен
+
 
 pause
 goto menu
@@ -825,67 +902,29 @@ goto menu
 
 :: HOSTS UPDATE =======================
 :hosts_update
-chcp 437 > nul
+chcp 65001 > nul
 cls
 
-set "hostsFile=%SystemRoot%\System32\drivers\etc\hosts"
-set "hostsUrl=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/refs/heads/main/.service/hosts"
-set "tempFile=%TEMP%\zapret_hosts.txt"
-set "needsUpdate=0"
+set "hostFile=%SystemRoot%\System32\drivers\etc\hosts"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/.service/hosts"
 
-echo Checking hosts file...
+echo Обновляю Hosts файл...
 
 if exist "%SystemRoot%\System32\curl.exe" (
-    curl -L -s -o "%tempFile%" "%hostsUrl%"
+    curl -L -o "%hostFile%" "%url%"
 ) else (
     powershell -Command ^
-        "$url = '%hostsUrl%';" ^
-        "$out = '%tempFile%';" ^
+        "$url = '%url%';" ^
+        "$out = '%hostFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
         "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
         "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
 )
 
-if not exist "%tempFile%" (
-    call :PrintRed "Failed to download hosts file from repository"
-    call :PrintYellow "Copy hosts file manually from %hostsUrl%"
-    pause
-    goto menu
-)
+echo Hosts файл обновлен
 
-set "firstLine="
-set "lastLine="
-for /f "usebackq delims=" %%a in ("%tempFile%") do (
-    if not defined firstLine (
-        set "firstLine=%%a"
-    )
-    set "lastLine=%%a"
-)
 
-findstr /C:"!firstLine!" "%hostsFile%" >nul 2>&1
-if !errorlevel! neq 0 (
-    echo First line from repository not found in hosts file
-    set "needsUpdate=1"
-)
-
-findstr /C:"!lastLine!" "%hostsFile%" >nul 2>&1
-if !errorlevel! neq 0 (
-    echo Last line from repository not found in hosts file
-    set "needsUpdate=1"
-)
-
-if "%needsUpdate%"=="1" (
-    echo:
-    call :PrintYellow "Hosts file needs to be updated"
-    call :PrintYellow "Please manually copy the content from the downloaded file to your hosts file"
-    
-    start notepad "%tempFile%"
-    explorer /select,"%hostsFile%"
-) else (
-    call :PrintGreen "Hosts file is up to date"
-    if exist "%tempFile%" del /f /q "%tempFile%"
-)
-
-echo:
 pause
 goto menu
 
