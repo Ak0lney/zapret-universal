@@ -1,5 +1,5 @@
 @echo off
-set "LOCAL_VERSION=1.9.2.1"
+set "LOCAL_VERSION=1.9.2.2"
 chcp 65001 > nul
 
 :: External commands
@@ -65,19 +65,21 @@ echo 4. Установить / обновить списки
 echo    Описание: Списки - текстовые файлы с домеными и IP-адресами, на которые работает запрет
 echo.
 echo 5. Установить / обновить hosts файл
+echo 6. Удалить hosts файл (вернуть к исходному состоянию)
 echo    Описание: Hosts файл - это системный текстовый файл, который сопоставляет доменные имена 
 echo    (для работы различных сервисов без VPN)
 echo.
-echo 6. Закрыть программу
+echo 7. Закрыть программу
 echo.
-set /p menu_choice=Выберите 1 до 6: 
+set /p menu_choice=Выберите от 1 до 7: 
 
 if "%menu_choice%"=="1" goto service_install
 if "%menu_choice%"=="2" goto service_remove
 if "%menu_choice%"=="3" goto service_status
 if "%menu_choice%"=="4" goto ipset_update
 if "%menu_choice%"=="5" goto hosts_update
-if "%menu_choice%"=="6" exit /b
+if "%menu_choice%"=="6" goto hosts_delete
+if "%menu_choice%"=="7" exit /b
 goto menu
 
 
@@ -94,7 +96,7 @@ chcp 65001 > nul
 
 sc query "zapret" >nul 2>&1
 if !errorlevel!==0 (
-    for /f "tokens=2*" %%A in ('reg query "HKLM\System\CurrentControlSet\Services\zapret" /v zapret-discord-youtube 2^>nul') do echo Service strategy installed from "%%B"
+    for /f "tokens=2*" %%A in ('reg query "HKLM\System\CurrentControlSet\Services\zapret" /v zapret-discord-youtube 2^>nul') do echo Установлен сервис: "%%B"
 )
 
 call :test_service zapret
@@ -923,6 +925,36 @@ if exist "%SystemRoot%\System32\curl.exe" (
 )
 
 echo Hosts файл обновлен
+
+
+pause
+goto menu
+
+
+
+:: HOSTS DELETE =======================
+:hosts_delete
+chcp 65001 > nul
+cls
+
+set "hostFile=%SystemRoot%\System32\drivers\etc\hosts"
+set "url=https://raw.githubusercontent.com/Ak0lney/zapret-universal/refs/heads/main/.service/def/hosts"
+
+echo Восстанавливаю Hosts файл...
+
+if exist "%SystemRoot%\System32\curl.exe" (
+    curl -L -o "%hostFile%" "%url%"
+) else (
+    powershell -Command ^
+        "$url = '%url%';" ^
+        "$out = '%hostFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
+        "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
+        "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
+)
+
+echo Hosts файл восстановлен
 
 
 pause
