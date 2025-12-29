@@ -1,3 +1,5 @@
+# https://github.com/Flowseal/zapret-discord-youtube/
+# zapret-discord-youtube
 yt3.ggpht.com
 yt4.ggpht.com
 yt3.googleusercontent.com
@@ -15,3 +17,63 @@ youtu.be
 yt-video-upload.l.google.com
 ytimg.com
 ytimg.l.google.com
+
+
+
+# https://github.com/itdoginfo/allow-domains/
+# google_ai
+deepmind.com
+deepmind.google
+geller-pa.googleapis.com
+generativelanguage.googleapis.com
+proactivebackend-pa.googleapis.com
+ai.google.dev
+generativeai.google
+makersuite.google.com
+aistudio.google.com
+bard.google.com
+gemini.google
+gemini.google.com
+notebooklm.google.com
+clients6.google.com
+notebooklm.google
+jules.google
+jules.google.com
+labs.google
+aisandbox-pa.googleapis.com
+stitch.withgoogle.com
+robinfrontend-pa.googleapis.com
+
+# google_play
+googleplay.com
+play-fe.googleapis.com
+play-games.googleusercontent.com
+play-lh.googleusercontent.com
+play.google.com
+play.googleapis.com
+lh3.googleusercontent.com
+connectivitycheck.gstatic.com
+android.clients.google.com
+prod-lt-playstoregatewayadapter-pa.googleapis.com
+beacons.gvt2.com
+gvt1.com
+
+# youtube
+youtube.com
+ytimg.com
+yting.com
+ggpht.com
+googlevideo.com
+youtubekids.com
+youtu.be
+yt.be
+youtube-nocookie.com
+wide-youtube.l.google.com
+ytimg.l.google.com
+youtubei.googleapis.com
+youtubeembeddedplayer.googleapis.com
+youtube-ui.l.google.com
+yt-video-upload.l.google.com
+jnn-pa.googleapis.com
+returnyoutubedislikeapi.com
+yt3.googleusercontent.com
