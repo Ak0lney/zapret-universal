@@ -53,7 +53,7 @@ call :check_updates_switch_status
 
 set "menu_choice=null"
 chcp 65001 > nul
-echo =========  v!LOCAL_VERSION!  =========
+echo === Zapret Universal v!LOCAL_VERSION! --- https://github.com/Ak0lney/zapret-universal ===
 echo.
 echo 1. Установить сервис
 echo 2. Удалить сервис
