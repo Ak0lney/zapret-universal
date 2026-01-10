@@ -46,31 +46,7 @@ ffzap.com
 betterttv.net
 7tv.app
 7tv.io
-
-
-
-
-
-
-
-
-
-
-# custom
-whatsapp.com
-whatsapp.net
-snapchat.com
-onlyfans.com
-archive.org
-figma.com
-github.com
-github.io
-githubassets.com
-curseforge.com
-forgecdn.net
-planetminecraft.com
-mcpedl.com
-technicpack.net
+localizeapi.com
 
 
 
@@ -1435,6 +1411,25 @@ robloxdev.com
 rbxinfra.net
 
 # telegram
+cdn-telegram.org
+comments.app
+contest.com
+fragment.com
+graph.org
+quiz.directory
+t.me
+tdesktop.com
+telega.one
+telegra.ph
+telegram-cdn.org
+telegram.dog
+telegram.me
+telegram.org
+telegram.space
+telesco.pe
+tg.dev
+tx.me
+usercontent.dev
 
 # tiktok
 # none
