@@ -1,5 +1,5 @@
 @echo off
-set "LOCAL_VERSION=1.9.2.2"
+set "LOCAL_VERSION=1.9.3.1"
 chcp 65001 > nul
 
 :: External commands
@@ -1017,3 +1017,4 @@ if "%extracted%"=="0" (
     exit
 )
 exit /b 0
+
