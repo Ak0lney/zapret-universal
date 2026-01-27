@@ -202,7 +202,7 @@
 104.25.158.178 finland10199.discord.media
 
 ### dns.malw.link: hosts file
-# Последнее обновление: 14 января 2026
+# Последнее обновление: 26 января 2026
 
 52.223.13.41 tracker.openbittorrent.com
 185.31.40.18 test.dns.malw.link
@@ -333,7 +333,6 @@
 45.155.204.190 www2.deepl.com
 45.155.204.190 login-wall.deepl.com
 45.155.204.190 w.deepl.com
-45.155.204.190 s.deepl.com
 45.155.204.190 dict.deepl.com
 45.155.204.190 ita-free.www.deepl.com
 45.155.204.190 write-free.www.deepl.com
@@ -394,7 +393,7 @@
 45.155.204.190 unleash.codeium.com
 45.155.204.190 inference.codeium.com
 45.155.204.190 windsurf-stable.codeium.com
-45.155.204.190 windsurf-telemetry.codeium.com
+144.31.14.104 windsurf-telemetry.codeium.com
 45.155.204.190 marketplace.windsurf.com
 
 # Twitch
@@ -410,7 +409,7 @@
 45.155.204.190 calendar.notion.so
 
 # Canva
-45.155.204.190 www.canva.com
+144.31.14.104 www.canva.com
 45.155.204.190 content-management-files.canva.com
 45.155.204.190 static.canva.com
 
@@ -449,14 +448,14 @@
 45.155.204.190 www.autodesk.com
 
 # Pump.fun
-95.182.120.241 pump.fun
+45.155.204.190 pump.fun
 45.155.204.190 frontend-api-v3.pump.fun
 45.155.204.190 images.pump.fun
 45.155.204.190 swap-api.pump.fun
 
 # Truth Social
 45.155.204.190 truthsocial.com
-95.182.120.241 static-assets-1.truthsocial.com
+45.155.204.190 static-assets-1.truthsocial.com
 
 # Elgato
 45.155.204.190 www.elgato.com
@@ -466,6 +465,8 @@
 
 # Dyson
 45.155.204.190 dyson.com
+144.31.14.104 www.dyson.com
+144.31.14.104 www.dyson.fr
 
 # Broadcom
 45.155.204.190 profile.broadcom.com
