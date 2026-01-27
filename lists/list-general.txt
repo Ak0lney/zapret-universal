@@ -455,7 +455,7 @@ anidub.com
 abook-club.ru
 depositphotos.com
 deviantart.com
-exler.ru
+exler.es
 forklog.com
 kinogo.ec
 medium.com
@@ -520,12 +520,12 @@ mega.nz
 itch.io
 twin.me
 twinme.com
-twinlife-systems.com 
+twinlife-systems.com
 fastpic.org
 lib.rus.ec
 scrollrevealjs.org
 monolisa.dev
-lingq.com 
+lingq.com
 primevue.org
 magaz.global
 radiojar.com
@@ -546,6 +546,7 @@ dreamina.capcut.com
 sophos.com
 pvpessence.com
 bufferbloat.net
+pronouns.page
 
 # geoblock
 4pda.to
@@ -900,7 +901,8 @@ boschaftermarket.com
 langdock.com
 mailinator.com
 marvelsnap.com
-global.platform.seconddinnertech.com
+seconddinnertech.com
+snapgametech.com
 fxnetworks.com
 deepl.com
 citrix.com
@@ -953,7 +955,7 @@ clevelandclinic.org
 housebrand.com
 devexpress.com
 quicknode.com
-dyson.com 
+dyson.com
 easydmarc.com
 hume.ai
 hybrid-analysis.com
@@ -984,6 +986,12 @@ document360.com
 augmentcode.com
 klarna.com
 mintmobile.com
+lyst.com
+affinity.studio
+x-minus.pro
+primark.com
+octopus.do
+all3dp.com
 
 # hodca
 cloudflare.com
@@ -1010,6 +1018,7 @@ rulet.tv
 rutracker.org
 sing-box.sagernet.org
 spankbang.com
+sb-cd.com
 sxyprn.com
 sxyprn.net
 teamviewer.com
@@ -1044,6 +1053,41 @@ adbappcontrol.com
 tunemymusic.com
 use.typekit.net
 jellyfin.org
+htx.com
+cochrane.org
+thelancet.com
+rottentomatoes.com
+resizing.flixster.com
+heltec.org
+silabs.com
+meshtastic.org
+maximoff.su
+strapi.io
+coderabbit.ai
+storybook.js.org
+aniliberty.top 
+libria.fun
+userbenchmark.com
+plantuml.com
+imigo.ai
+tefl.org
+britishcouncil.org
+imgbb.com
+gnome.org
+kde.org
+fwupd.org
+flathub.org
+joeysretrohandhelds.com
+customfw.xyz
+youngliving.com
+gopro.com
+artixlinux.org 
+beatsaver.com
+beatmods.com
+bsmanager.io
+ajay.app
+opencode.ai
+dvprogram.state.gov
 
 hetzner.com
 hetzner.cloud
@@ -1275,6 +1319,10 @@ liga.net
 novyny.live
 obozrevatel.com
 zaxid.net
+mezha.net
+ukrainer.net
+ukrinform.net
+themoscowtimes.com
 
 # porn
 xvideos.com
@@ -1339,24 +1387,24 @@ cloudfront.net
 digitalocean.com
 
 # discord
-dis.gd 
-discord.co 
-discord.com 
-discord.design 
-discord.dev 
-discord.gg 
-discord.gift 
-discord.gifts 
-discord.media 
-discord.new 
-discord.store 
-discord.tools 
-discordapp.com 
-discordapp.net 
+dis.gd
+discord.co
+discord.com
+discord.design
+discord.dev
+discord.gg
+discord.gift
+discord.gifts
+discord.media
+discord.new
+discord.store
+discord.tools
+discordapp.com
+discordapp.net
 discordmerch.com
-discordpartygames.com 
-discord-activities.com 
-discordactivities.com 
+discordpartygames.com
+discord-activities.com
+discordactivities.com
 discordsays.com
 discord-attachments-uploads-prd.storage.googleapis.com
 
@@ -1432,7 +1480,22 @@ tx.me
 usercontent.dev
 
 # tiktok
-# none
+byteoversea.com
+ibytedtos.com
+muscdn.com
+musical.ly
+tik-tokapi.com
+tiktok.com
+tiktokcdn-us.com
+tiktokcdn-eu.com
+tiktokcdn.com
+tiktokd.net
+tiktokd.org
+tiktokv.com
+tiktokv.us
+tiktokw.us
+ttwstatic.com
+tiktokv.eu
 
 # twitter
 ads-twitter.com
